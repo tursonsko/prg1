@@ -4,33 +4,58 @@ using namespace std;
 
 int main()
 {
-	int size, i, j;
+	int size;
+	int x = 1;
 
 	cout << "Podaj rozmiar ";
-	cin >> size;
+	cin >> size;	
+
 	
-	for ( i = 1; i <= size + 1; i++ )
+	for ( int i = 0; i <= size; i++ )
+  	{
+    	for (int j = size; j > i; j-- )
+    	{
+      		cout << " ";
+    	}
+
+    	cout << "#";
+
+    	if ( i > 0 )
+    	{
+      		for ( int k = 1; k <= x; k++ )
+      		{
+        		cout << " ";
+      		}
+      		x+=2;
+      		cout << "^";
+    	}
+    
+    cout << endl;
+
+    }
+
+	for ( int i = 1; i < size+1; i++ ) 
 	{
-		for( j = size + 1; j>i; j-- )
-		{
-			cout << " ";
-		}
-		
-		cout << "*";
-		cout << endl;
+	    for ( int k = 0; k < i; k++ )
+	    {
+	    	cout << "+";
+	    }
+	    cout << "^";
+
+	    for( int j = 0 ; j <= x-5; j++ )
+	    {
+	    	cout << "+";
+	    }
+	    x-=2;
+
+	    if ( i != size )
+	    {
+	    	cout << "#";
+	    }
+
+	    cout << endl;
 	}
-
-	// for ( i = 1; i <= size; i++ )
-	// {
-	// 	for( j = size; j>i; j-- )
-	// 	{
-	// 		cout << " ";
-	// 	}
 		
-	// 	cout << "*";
-	// 	cout << endl;
-	// }
-
-
 return 0;
+
 }
