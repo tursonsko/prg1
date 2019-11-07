@@ -10,7 +10,7 @@ int main()
     
     cin >> wyraz;
         
-    while(wyraz[dl] > 1)
+    while(wyraz[dl] > 0)
     {
             dl++;
     }
