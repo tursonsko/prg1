@@ -12,7 +12,7 @@ using namespace std; int main() {
         dl++;
     }
     for(int j = dl; j>=0; j--) {
-        cout << napis[j]<<endl;
+        cout << napis[j];
     }
     
     
