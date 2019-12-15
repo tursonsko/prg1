@@ -13,7 +13,9 @@ double addMoney(double &x);
 double substractMoney(double &x);
 
 void transferMoney(double &x, double &y);
+void transferToSavingsAccount(double &x, double &y);
 void showDeposit(double x);
+void showSavingsBalance(double x);
 
 int main()
 {
@@ -32,6 +34,13 @@ int main()
     showDeposit(client1);
     showDeposit(client2);
     cout<<"********************************************"<<endl;
+
+    transferToSavingsAccount(client1, clientSave1);
+    showDeposit(client1);
+    showSavingsBalance(clientSave1);
+    cout<<"********************************************"<<endl;
+
+
 
     return 0;
 }
@@ -91,10 +100,34 @@ void transferMoney(double &x, double &y)
     }
 }
 
+void transferToSavingsAccount(double &x, double &y)
+{
+    double z;
+
+    cout << "Podaj kwotę, którą chcesz przelać na konto oszczędnościowe" << endl;
+    cin >> z;
+
+    if(floorl(z*100)/100 < 0)
+    {
+        cout << "Nie możesz przelać ujemnej kwoty!";
+    } else 
+    {
+        x-= floorl(z*100)/100;
+        y += floorl(z*100)/100;
+    }
+
+}
+
 
 
 void showDeposit(double x)
 {
     cout << "Stan konta klienta wynosi " << x << endl;
 }
+
+void showSavingsBalance(double x)
+{
+    cout << "Stan konta osczędnościowego wynosi " << x << endl;
+}
+
 
