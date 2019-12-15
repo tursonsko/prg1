@@ -40,7 +40,7 @@ double addMoney(double &x)
 {
     double y;
 
-    cout<<"Podaj kwotę, którą wczesz wpłacić"<<endl;
+    cout<<"Podaj kwotę, którą chcesz wpłacić na konto"<<endl;
     cin >> y;
     double z = floorl(y*100)/100;
     if (y>0)
@@ -54,7 +54,7 @@ double substractMoney(double &x)
 {
     double y;
     
-    cout<<"Podaj kwotę, którą wczesz wypłacić"<<endl;
+    cout<<"Podaj kwotę, którą wczesz wypłacić z konta"<<endl;
     cin >> y;
     double z = floorl(y*100)/100;
 
@@ -75,7 +75,7 @@ void transferMoney(double &x, double &y)
 {
     double z;
 
-    cout << "Podaj kwotę, którą chcesz przekazać innemu Klientowi"<<endl;
+    cout << "Podaj kwotę, którą chcesz przekazać innemu Klientowi" << endl;
     cin >> z;
 
     if (floorl(z*100)/100 > x)
