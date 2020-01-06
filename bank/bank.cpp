@@ -49,6 +49,8 @@ void mainMenu()
     cout << "WYBIERZ KLIENTA" << endl;
     cout << "1 - KLIENT 1" << endl;
     cout << "2 - KLIENT 2" << endl;
+    cout << "3 - KOLEJNY MIESIĄC" << endl;
+    cout << "INNY KLAWISZ - WYJŚCIE" << endl;
 
     cin >> y;
 
@@ -62,45 +64,78 @@ void mainMenu()
         addMoney(client1);
         break;
     case 2:
-        // 
+        cout << "opcja 2" << endl; 
+        break;
+    case 3:
+        cout << "opcja 3" << endl; 
         break;
     default:
         break;
     }
 }
 
-//KREDYT
 
+void changeMonth()
+{
+
+}
+
+
+void firstClientMenu()
+{
+
+}
+
+
+void secondClientMenu()
+{
+    
+}
+
+
+//KREDYT
 void takeCredit( double &client, double &clientCredit, double &clientCreditIntallment)
 {
     double creditAmount;
     double totalCreditAmount;
-    double num;
+    int num;
     double installment;
-    double interest = 1.16;
+    double interest = 0.16;
+    double bankCharge = 0.08;
 
     cout << "Jaka kwota kredytu?" << endl;
     cin >> creditAmount;
-    //KWOTA KREDYTU Z OPROCENTOWANIEM
-    totalCreditAmount = creditAmount * interest;
+    creditAmount = floorl(creditAmount*100)/100;
 
-    //PRZYPISANIE KREDYTU ORAZ RATY KREDYTU KLIENTOWI
-    client += creditAmount;
-    clientCredit += totalCreditAmount;
+    if(creditAmount <= 0)
+    {
+        cout << "Nie zaciągasz kredytu w tym miesiącu" << endl;
+        return;
+    } else {
+        //KWOTA KREDYTU Z OPROCENTOWANIEM I OPLATA BANKOWA
+        totalCreditAmount = creditAmount + floorl((creditAmount * interest)*100)/100 + floorl((creditAmount * bankCharge)*100)/100;
 
-    //cout << "kwota kredytu " << amount << endl;
+        //PRZYPISANIE KREDYTU ORAZ RATY KREDYTU KLIENTOWI
+        client += creditAmount;
+        clientCredit += totalCreditAmount;
 
-    
-    cout << "Ile rat kredytu?" <<endl;
-    cin >> num;
+        do {
+            cout << "Na ile rat rozłożyć kredyt?" <<endl;
+            cin >> num;
+        } while (num <= 0);
+        
+        installment = floorl((totalCreditAmount/num)*100)/100;
 
-    installment = totalCreditAmount/num;
-
-    //PRZYPISANIE RATY KREDYTU KLIENTOWI
-    clientCreditIntallment += num;
-     
-    cout << "Rata kredytu wynosi " << installment << endl;
-
+        //PRZYPISANIE RATY KREDYTU KLIENTOWI
+        clientCreditIntallment += num;
+        
+        cout << "Łączna kwota kredytu na kwotę " << creditAmount << " zł wynosi " << totalCreditAmount << " zł" << endl;
+        cout << "Rata kredytu wynosi " << installment << " zł" << endl;
+        cout << "RRSO 16% kredytu wynosi " << floorl((creditAmount * interest)*100)/100 << " zł" << endl;
+        cout << "Opłata bankowa 8% wynosi " << floorl((creditAmount * bankCharge)*100)/100 << " zł" << endl;
+        cout << "***************************************************" << endl;
+        
+    }
 
 }
 
@@ -119,6 +154,7 @@ double addMoney(double &clientAmount)
     }
     return clientAmount;
 }
+
 
 //WYPLATA Z KONTA
 double substractMoney(double &clientAmount)
@@ -141,8 +177,6 @@ double substractMoney(double &clientAmount)
         }
     }
 }
-
-
 
 
 //PRZELEW Z KONTA NA KONTO
@@ -188,29 +222,26 @@ void transferToSavingsAccount(double &debitCount, double &savingsCount)
 
 
 //WYCIAG Z KONTA
-
 //STAN KONTA ROR
 void showDeposit(double clientAmount)
 {
-    cout << "Stan konta klienta wynosi " << clientAmount << endl;
+    cout << "Stan konta klienta wynosi: " << clientAmount << " zł" << endl;
 }
 
 //STAN KONTA OSZCZEDNOSCIOWEGO
 void showSavingsBalance(double clientSavingsAmount)
 {
-    cout << "Stan konta osczędnościowego wynosi " << clientSavingsAmount << endl;
+    cout << "Stan konta osczędnościowego wynosi: " << clientSavingsAmount << " zł" << endl;
 }
 
 //ILOSC KREDYTU DO SPLACENIA
 void showCreditAmount(double creditAmount)
 {
-    cout << "Pozostała kwota kredytu to: " << creditAmount << endl;
+    cout << "Zadłużenioe konta: " << creditAmount << " zł" << endl;
 }
 
 //ILOSC RAT KREDYTU DO SPLACENIA
 void showCreditInstallments(double creditInstallments)
 {
-    cout << "Pozostało " << creditInstallments << " rat do końca spłaty kredytu" << endl;
+    cout << "Liczba rat pozostałych do końca spłaty kredytu: " << creditInstallments << endl;
 }
-
-
