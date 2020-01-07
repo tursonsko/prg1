@@ -35,6 +35,8 @@ void showCreditAmountMonthly(double creditAmountMonthly);
 
 void changeMonth(double &client, double &clientSave, double &clientCredit, double &creditInstallmentMonthly, double &clientCreditInstallment);
 
+void firstClientMenu();
+
 
 int main()
 {
@@ -51,35 +53,26 @@ void mainMenu()
 {
     while(true)
     {
-        int y;
-        cout << "WITAJ W TUREKBANK!"<< endl;
-        cout << "WYBIERZ KLIENTA I ZATWIERDŹ NACISKAJĄC 'ENTER'" << endl;
+        int option;
+        cout << "\n*****************************************" << endl;
+        cout << "\nWITAJ W TUREKBANK!\n"<< endl;
+        cout << "WYBIERZ KLIENTA I ZATWIERDŹ NACISKAJĄC 'ENTER'\n" << endl;
         cout << "1 - KLIENT 1" << endl;
         cout << "2 - KLIENT 2" << endl;
         cout << "3 - KOLEJNY MIESIĄC" << endl;
         cout << "INNY KLAWISZ - POWROT DO MENU GŁÓWNEGO" << endl;
 
-        cin >> y;
+        cin >> option;
         // system("clear");
 
-        switch(y)
+        switch(option)
         {
         case 1:
-            cout << "**************************************" << endl;
-            cout << "\nKlient 1\n" << endl;
-            takeCredit(client1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
-            //changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
-
-            // showDeposit(client1);
-            // showCreditAmount(clientCredit1);
-            // showCreditInstallments(clientCreditInstallment1);
-            // showCreditAmountMonthly(creditInstallmentMonthly1);
-            // addMoney(client1);
-            // transferMoney(client1, client2);
+            firstClientMenu();
             break;
         case 2:
-            cout << "**************************************" << endl;
-            cout << "\nKlient 2\n" << endl;
+            cout << "\n**************************************" << endl;
+            cout << "Klient 2\n" << endl;
             showDeposit(client2);
             
             break;
@@ -114,7 +107,50 @@ void changeMonth(double &client, double &clientSave, double &clientCredit, doubl
 
 void firstClientMenu()
 {
+    while(true)
+    {
+        int option;
 
+        cout << "\n**************************************" << endl;
+        cout << "WITAJ KLIENCIE 1\n" << endl;
+        cout << "WYBIERZ AKCJĘ NA KONCIE I ZATWIERDŹ NACISKAJĄC 'ENTER'\n" << endl;
+        cout << "[1] - WPŁATA" << endl;
+        cout << "[2] - WYPŁATA" << endl;
+        cout << "[3] - WZIĘCIE POŻYCZKI" << endl;
+        cout << "[4] - PRZELEW NA KONT KLIENTA 2" << endl;
+        cout << "[5] - PRZELEW NA KONTO OSZCZĘDNOŚCIOWE" << endl;
+        cout << "[6] - NASTĘPNY MIESIĄC" << endl;
+        cout << "INNY KLAWISZ - POWROT DO MENU GŁÓWNEGO" << endl;
+
+
+        
+        cin >> option;
+
+        switch(option)
+        {
+            case 1:
+                addMoney(client1);
+                break;
+            case 2:
+                substractMoney(client1);
+                break;
+            case 3:
+                takeCredit(client1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
+                break;
+            case 4:
+                transferMoney(client1, client2);
+                break;
+            case 5:
+                transferToSavingsAccount(client1, clientSave1);
+                break;
+            case 6:
+                changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
+                break;
+            default:
+                mainMenu();
+                break;
+        }
+    }
 }
 
 void secondClientMenu()
@@ -130,8 +166,8 @@ void takeCredit( double &client, double &clientCredit, double &clientCreditInsta
     double creditAmount;
     double totalCreditAmount;
     double installment;
-    double interest = 0.16;
-    double bankCharge = 0.08;
+    double interest = 0.2;
+    double bankCharge = 0.1;
 
     cout << "Jaka kwota kredytu?" << endl;
     cin >> creditAmount;
@@ -163,8 +199,8 @@ void takeCredit( double &client, double &clientCredit, double &clientCreditInsta
         
         cout << "Łączna kwota kredytu na kwotę " << creditAmount << " zł wynosi " << totalCreditAmount << " zł" << endl;
         cout << "Rata kredytu wynosi " << installment << " zł" << endl;
-        cout << "RRSO 16% kredytu wynosi " << floorl((creditAmount * interest)*100)/100 << " zł" << endl;
-        cout << "Opłata bankowa 8% wynosi " << floorl((creditAmount * bankCharge)*100)/100 << " zł" << endl;
+        cout << "RRSO 20% kredytu wynosi " << floorl((creditAmount * interest)*100)/100 << " zł" << endl;
+        cout << "Opłata bankowa 10% wynosi " << floorl((creditAmount * bankCharge)*100)/100 << " zł" << endl;
         cout << "***************************************************" << endl;
         
     }
