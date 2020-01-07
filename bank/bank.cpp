@@ -12,16 +12,18 @@ double clientSave2 = 0.0;
 double clientCredit1 = 0.0;
 double clientCredit2 = 0.0;
 
-double clientCreditIntallment1 = 0.0;
-double clientCreditIntallment2 = 0.0;
+double clientCreditInstallment1 = 0.0;
+double clientCreditInstallment2 = 0.0;
 
+double creditInstallmentMonthly1 = 0.0;
+double creditInstallmentMonthly2 = 0.0;
 
 
 double addMoney(double &clientAmount);
 double substractMoney(double &clientAmount);
 
 void mainMenu();
-void takeCredit(double &client, double &clientCredit, double &clientCreditIntallment);
+void takeCredit(double &client, double &clientCredit, double &clientCreditInstallment, double &creditInstallmentMonthly);
 void transferMoney(double &giver, double &recipient);
 void transferToSavingsAccount(double &debitCount, double &savingsCount);
 
@@ -29,6 +31,9 @@ void showDeposit(double clientAmount);
 void showSavingsBalance(double clientSavingsAmount);
 void showCreditAmount(double creditAmount);
 void showCreditInstallments(double creditInstallments);
+void showCreditAmountMonthly(double creditAmountMonthly);
+
+void changeMonth(double &client, double &clientSave, double &clientCredit, double &creditInstallmentMonthly, double &clientCreditInstallment);
 
 
 int main()
@@ -44,61 +49,86 @@ int main()
 //MENU GLOWNE
 void mainMenu()
 {
-    int y;
-    cout << "WITAJ W TUREKBANK!"<< endl;
-    cout << "WYBIERZ KLIENTA" << endl;
-    cout << "1 - KLIENT 1" << endl;
-    cout << "2 - KLIENT 2" << endl;
-    cout << "3 - KOLEJNY MIESIĄC" << endl;
-    cout << "INNY KLAWISZ - WYJŚCIE" << endl;
-
-    cin >> y;
-
-    switch(y)
+    while(true)
     {
-    case 1:
-        takeCredit(client1, clientCredit1, clientCreditIntallment1);
+        int y;
+        cout << "WITAJ W TUREKBANK!"<< endl;
+        cout << "WYBIERZ KLIENTA I ZATWIERDŹ NACISKAJĄC 'ENTER'" << endl;
+        cout << "1 - KLIENT 1" << endl;
+        cout << "2 - KLIENT 2" << endl;
+        cout << "3 - KOLEJNY MIESIĄC" << endl;
+        cout << "INNY KLAWISZ - POWROT DO MENU GŁÓWNEGO" << endl;
+
+        cin >> y;
+        // system("clear");
+
+        switch(y)
+        {
+        case 1:
+            cout << "**************************************" << endl;
+            cout << "\nKlient 1\n" << endl;
+            takeCredit(client1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
+            //changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
+
+            // showDeposit(client1);
+            // showCreditAmount(clientCredit1);
+            // showCreditInstallments(clientCreditInstallment1);
+            // showCreditAmountMonthly(creditInstallmentMonthly1);
+            // addMoney(client1);
+            // transferMoney(client1, client2);
+            break;
+        case 2:
+            cout << "**************************************" << endl;
+            cout << "\nKlient 2\n" << endl;
+            showDeposit(client2);
+            
+            break;
+        case 3:
+            changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
+            //cout << "opcja 3" << endl; 
+            //break;
+        default:
+            break;
+        }
+        
+    }
+    
+}
+
+void changeMonth(double &client, double &clientSave, double &clientCredit, double &creditInstallmentMonthly, double &clientCreditInstallment)
+{
+    clientSave = floorl((clientSave*1.02)*100)/100;
+    
+    if(clientCredit > 0 && clientCreditInstallment > 0)
+    {
+        clientCredit = floorl((clientCredit - creditInstallmentMonthly)*100)/100;
+        client = floorl((client - creditInstallmentMonthly)*100)/100;
+        clientCreditInstallment--;
+        
         showDeposit(client1);
         showCreditAmount(clientCredit1);
-        showCreditInstallments(clientCreditIntallment1);
-        addMoney(client1);
-        break;
-    case 2:
-        cout << "opcja 2" << endl; 
-        break;
-    case 3:
-        cout << "opcja 3" << endl; 
-        break;
-    default:
-        break;
+        showCreditInstallments(clientCreditInstallment1);
+        showCreditAmountMonthly(creditInstallmentMonthly1);
     }
 }
-
-
-void changeMonth()
-{
-
-}
-
 
 void firstClientMenu()
 {
 
 }
 
-
 void secondClientMenu()
 {
     
 }
 
-
 //KREDYT
-void takeCredit( double &client, double &clientCredit, double &clientCreditIntallment)
+
+void takeCredit( double &client, double &clientCredit, double &clientCreditInstallment, double &creditInstallmentMonthly)
 {
+    int num;
     double creditAmount;
     double totalCreditAmount;
-    int num;
     double installment;
     double interest = 0.16;
     double bankCharge = 0.08;
@@ -113,7 +143,7 @@ void takeCredit( double &client, double &clientCredit, double &clientCreditIntal
         return;
     } else {
         //KWOTA KREDYTU Z OPROCENTOWANIEM I OPLATA BANKOWA
-        totalCreditAmount = creditAmount + floorl((creditAmount * interest)*100)/100 + floorl((creditAmount * bankCharge)*100)/100;
+        totalCreditAmount = creditAmount + creditAmount * interest + creditAmount * bankCharge;
 
         //PRZYPISANIE KREDYTU ORAZ RATY KREDYTU KLIENTOWI
         client += creditAmount;
@@ -126,8 +156,10 @@ void takeCredit( double &client, double &clientCredit, double &clientCreditIntal
         
         installment = floorl((totalCreditAmount/num)*100)/100;
 
-        //PRZYPISANIE RATY KREDYTU KLIENTOWI
-        clientCreditIntallment += num;
+        //PRZYPISANIE ILOŚCI RAT KREDYTU KLIENTOWI
+        clientCreditInstallment += num;
+
+        creditInstallmentMonthly += installment;
         
         cout << "Łączna kwota kredytu na kwotę " << creditAmount << " zł wynosi " << totalCreditAmount << " zł" << endl;
         cout << "Rata kredytu wynosi " << installment << " zł" << endl;
@@ -155,7 +187,6 @@ double addMoney(double &clientAmount)
     return clientAmount;
 }
 
-
 //WYPLATA Z KONTA
 double substractMoney(double &clientAmount)
 {
@@ -177,6 +208,8 @@ double substractMoney(double &clientAmount)
         }
     }
 }
+
+
 
 
 //PRZELEW Z KONTA NA KONTO
@@ -222,6 +255,7 @@ void transferToSavingsAccount(double &debitCount, double &savingsCount)
 
 
 //WYCIAG Z KONTA
+
 //STAN KONTA ROR
 void showDeposit(double clientAmount)
 {
@@ -237,7 +271,7 @@ void showSavingsBalance(double clientSavingsAmount)
 //ILOSC KREDYTU DO SPLACENIA
 void showCreditAmount(double creditAmount)
 {
-    cout << "Zadłużenioe konta: " << creditAmount << " zł" << endl;
+    cout << "Zadłużenie wynosi: " << creditAmount << " zł" << endl;
 }
 
 //ILOSC RAT KREDYTU DO SPLACENIA
@@ -245,3 +279,10 @@ void showCreditInstallments(double creditInstallments)
 {
     cout << "Liczba rat pozostałych do końca spłaty kredytu: " << creditInstallments << endl;
 }
+
+//WYSOKOSC RATY KREDYTU
+void showCreditAmountMonthly(double creditAmountMonthly)
+{
+    cout << "Wysokość miesięcznej raty kredytu wynosi: " << creditAmountMonthly << endl;
+}
+
