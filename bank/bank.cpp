@@ -34,6 +34,7 @@ void showCreditInstallments(double creditInstallments);
 void showCreditAmountMonthly(double creditAmountMonthly);
 
 void changeMonth(double &client, double &clientSave, double &clientCredit, double &creditInstallmentMonthly, double &clientCreditInstallment);
+void preview(double client, double clientSave, double clientCredit, double clientCreditInstallment, double creditInstallmentMonthly);
 
 void firstClientMenu();
 
@@ -54,12 +55,13 @@ void mainMenu()
     while(true)
     {
         int option;
-        cout << "\n*****************************************" << endl;
-        cout << "\nWITAJ W TUREKBANK!\n"<< endl;
+        cout << "\n********************************************************" << endl;
+        cout << "\nWITAJ W TUREKBANK!"<< endl;
+        cout << "ABY POPRAWNIE SKORZYSTAĆ Z NASZYCH USŁUG\nORAZ NIE SPOWODOWAĆ BŁĘDÓW PPROGRAMU\nSTOSUJ SIĘ DO ZALECEŃ" << endl;
         cout << "WYBIERZ KLIENTA I ZATWIERDŹ NACISKAJĄC 'ENTER'\n" << endl;
-        cout << "1 - KLIENT 1" << endl;
-        cout << "2 - KLIENT 2" << endl;
-        cout << "3 - KOLEJNY MIESIĄC" << endl;
+        cout << "[1] - KLIENT 1" << endl;
+        cout << "[2] - KLIENT 2" << endl;
+        cout << "[3] - KOLEJNY MIESIĄC" << endl;
         cout << "INNY KLAWISZ - POWROT DO MENU GŁÓWNEGO" << endl;
 
         cin >> option;
@@ -68,13 +70,14 @@ void mainMenu()
         switch(option)
         {
         case 1:
+            system("clear");
             firstClientMenu();
             break;
         case 2:
-            cout << "\n**************************************" << endl;
+            system("clear");
+            cout << "\n********************************************************" << endl;
             cout << "Klient 2\n" << endl;
             showDeposit(client2);
-            
             break;
         case 3:
             changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
@@ -88,6 +91,7 @@ void mainMenu()
     
 }
 
+//ZMIANA MIESIACA
 void changeMonth(double &client, double &clientSave, double &clientCredit, double &creditInstallmentMonthly, double &clientCreditInstallment)
 {
     clientSave = floorl((clientSave*1.02)*100)/100;
@@ -98,29 +102,51 @@ void changeMonth(double &client, double &clientSave, double &clientCredit, doubl
         client = floorl((client - creditInstallmentMonthly)*100)/100;
         clientCreditInstallment--;
         
-        showDeposit(client1);
-        showCreditAmount(clientCredit1);
-        showCreditInstallments(clientCreditInstallment1);
-        showCreditAmountMonthly(creditInstallmentMonthly1);
+        // cout << "\n********************************************************" << endl;
+        // showCreditAmount(clientCredit1);
+        // showCreditInstallments(clientCreditInstallment1);
+        // showCreditAmountMonthly(creditInstallmentMonthly1);
     }
+        // showDeposit(client1);
+        // showSavingsBalance(clientSave1);
+}
+
+//PODGLAD KONTA
+void preview(double client, double clientSave, double clientCredit, double clientCreditInstallment, double creditInstallmentMonthly)
+{
+    showDeposit(client);
+    showSavingsBalance(clientSave);
+
+    if(clientCredit > 0 && clientCreditInstallment > 0)
+    {
+        showCreditAmount(clientCredit);
+        showCreditInstallments(clientCreditInstallment);
+        showCreditAmountMonthly(creditInstallmentMonthly);
+    }
+    
 }
 
 void firstClientMenu()
 {
+    
     while(true)
     {
+        //system("clear");
+        
         int option;
 
-        cout << "\n**************************************" << endl;
+        cout << "\n********************************************************" << endl;
         cout << "WITAJ KLIENCIE 1\n" << endl;
-        cout << "WYBIERZ AKCJĘ NA KONCIE I ZATWIERDŹ NACISKAJĄC 'ENTER'\n" << endl;
+        cout << "WYBIERZ AKCJĘ NA KONCIE I ZATWIERDŹ NACISKAJĄC 'ENTER'" << endl;
+        cout << "UWAGA! WPISUJ TYLKO LICZBY CAŁKOWITE!\n" << endl;
         cout << "[1] - WPŁATA" << endl;
         cout << "[2] - WYPŁATA" << endl;
         cout << "[3] - WZIĘCIE POŻYCZKI" << endl;
-        cout << "[4] - PRZELEW NA KONT KLIENTA 2" << endl;
+        cout << "[4] - PRZELEW NA KONTO KLIENTA 2" << endl;
         cout << "[5] - PRZELEW NA KONTO OSZCZĘDNOŚCIOWE" << endl;
-        cout << "[6] - NASTĘPNY MIESIĄC" << endl;
-        cout << "INNY KLAWISZ - POWROT DO MENU GŁÓWNEGO" << endl;
+        cout << "[6] - PODGLĄD STANU KONTA" << endl;
+        cout << "[7] - NASTĘPNY MIESIĄC" << endl;
+        cout << "INNA CYFRA/LICZBA - POWROT DO MENU GŁÓWNEGO" << endl;
 
 
         
@@ -129,24 +155,35 @@ void firstClientMenu()
         switch(option)
         {
             case 1:
+            system("clear");
                 addMoney(client1);
                 break;
             case 2:
+            system("clear");
                 substractMoney(client1);
                 break;
             case 3:
+            system("clear");
                 takeCredit(client1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
                 break;
             case 4:
+            system("clear");
                 transferMoney(client1, client2);
                 break;
             case 5:
+            system("clear");
                 transferToSavingsAccount(client1, clientSave1);
                 break;
             case 6:
+            system("clear");
+                preview(client1, clientSave1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
+                break;
+            case 7:
+            system("clear");
                 changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
                 break;
             default:
+                system("clear");
                 mainMenu();
                 break;
         }
@@ -159,8 +196,7 @@ void secondClientMenu()
 }
 
 //KREDYT
-
-void takeCredit( double &client, double &clientCredit, double &clientCreditInstallment, double &creditInstallmentMonthly)
+void takeCredit(double &client, double &clientCredit, double &clientCreditInstallment, double &creditInstallmentMonthly)
 {
     int num;
     double creditAmount;
@@ -190,6 +226,8 @@ void takeCredit( double &client, double &clientCredit, double &clientCreditInsta
             cin >> num;
         } while (num <= 0);
         
+        system("clear");
+
         installment = floorl((totalCreditAmount/num)*100)/100;
 
         //PRZYPISANIE ILOŚCI RAT KREDYTU KLIENTOWI
@@ -201,7 +239,7 @@ void takeCredit( double &client, double &clientCredit, double &clientCreditInsta
         cout << "Rata kredytu wynosi " << installment << " zł" << endl;
         cout << "RRSO 20% kredytu wynosi " << floorl((creditAmount * interest)*100)/100 << " zł" << endl;
         cout << "Opłata bankowa 10% wynosi " << floorl((creditAmount * bankCharge)*100)/100 << " zł" << endl;
-        cout << "***************************************************" << endl;
+        cout << "********************************************************" << endl;
         
     }
 
@@ -232,13 +270,15 @@ double substractMoney(double &clientAmount)
     cin >> y;
     double z = floorl(y*100)/100;
 
-    if (y>clientAmount)
+    if (z>clientAmount)
     {
         cout << "Nie masz wystarczających środków na koncie" << endl;
     } else 
     {
-        if(y>0)
+        if(z<=0)
         {
+            cout << "Nie możesz wypłacić 0 lub mniej" << endl;
+        } else {
             clientAmount-=z;
             return floorl(clientAmount*100)/100;
         }
@@ -277,15 +317,19 @@ void transferToSavingsAccount(double &debitCount, double &savingsCount)
 
     cout << "Podaj kwotę, którą chcesz przelać na konto oszczędnościowe" << endl;
     cin >> z;
-
-    if(floorl(z*100)/100 < 0)
+    if(debitCount <= 0)
     {
-        cout << "Nie możesz przelać ujemnej kwoty!";
-    } else 
-    {
-        debitCount-= floorl(z*100)/100;
-        savingsCount += floorl(z*100)/100;
+        cout << "Nie masz środków na koncie" << endl;
+    } else {
+        if(floorl(z*100)/100 < 0)
+        {
+            cout << "Nie możesz przelać ujemnej kwoty!";
+        } else {
+            debitCount-= floorl(z*100)/100;
+            savingsCount += floorl(z*100)/100;
+        }
     }
+    
 
 }
 
