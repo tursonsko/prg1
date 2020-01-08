@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ void mainMenu();
 void takeCredit(double &client, double &clientCredit, double &clientCreditInstallment, double &creditInstallmentMonthly);
 void transferMoney(double &giver, double &recipient);
 void transferToSavingsAccount(double &debitCount, double &savingsCount);
+void transferFromSavingsToDebitCount(double &savingsCount, double &debitCount);
 
 void showDeposit(double clientAmount);
 void showSavingsBalance(double clientSavingsAmount);
@@ -75,12 +77,12 @@ void mainMenu()
             break;
         case 2:
             system("clear");
-            cout << "\n********************************************************" << endl;
-            cout << "Klient 2\n" << endl;
-            showDeposit(client2);
+            //secondClientMenu();
             break;
         case 3:
+            system("clear");
             changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
+            changeMonth(client2, clientSave2, clientCredit2, creditInstallmentMonthly2, clientCreditInstallment2);
             //cout << "opcja 3" << endl; 
             //break;
         default:
@@ -144,8 +146,9 @@ void firstClientMenu()
         cout << "[3] - WZIĘCIE POŻYCZKI" << endl;
         cout << "[4] - PRZELEW NA KONTO KLIENTA 2" << endl;
         cout << "[5] - PRZELEW NA KONTO OSZCZĘDNOŚCIOWE" << endl;
-        cout << "[6] - PODGLĄD STANU KONTA" << endl;
-        cout << "[7] - NASTĘPNY MIESIĄC" << endl;
+        cout << "[6] - PRZELEW Z KONTA OSCZĘDNOŚCIOWEGHO NA KONTO ROR" << endl;
+        cout << "[7] - PODGLĄD STANU KONTA" << endl;
+        cout << "[8] - NASTĘPNY MIESIĄC" << endl;
         cout << "INNA CYFRA/LICZBA - POWROT DO MENU GŁÓWNEGO" << endl;
 
 
@@ -176,9 +179,13 @@ void firstClientMenu()
                 break;
             case 6:
             system("clear");
-                preview(client1, clientSave1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
+                transferFromSavingsToDebitCount(clientSave1, client1);
                 break;
             case 7:
+            system("clear");
+                preview(client1, clientSave1, clientCredit1, clientCreditInstallment1, creditInstallmentMonthly1);
+                break;
+            case 8:
             system("clear");
                 changeMonth(client1, clientSave1, clientCredit1, creditInstallmentMonthly1, clientCreditInstallment1);
                 break;
@@ -235,10 +242,10 @@ void takeCredit(double &client, double &clientCredit, double &clientCreditInstal
 
         creditInstallmentMonthly += installment;
         
-        cout << "Łączna kwota kredytu na kwotę " << creditAmount << " zł wynosi " << totalCreditAmount << " zł" << endl;
-        cout << "Rata kredytu wynosi " << installment << " zł" << endl;
-        cout << "RRSO 20% kredytu wynosi " << floorl((creditAmount * interest)*100)/100 << " zł" << endl;
-        cout << "Opłata bankowa 10% wynosi " << floorl((creditAmount * bankCharge)*100)/100 << " zł" << endl;
+        cout << "Łączna kwota kredytu na kwotę " << setprecision(15) << creditAmount << " zł wynosi " << setprecision(15) << totalCreditAmount << " zł" << endl;
+        cout << "Rata kredytu wynosi " << setprecision(15) << installment << " zł" << endl;
+        cout << "RRSO 20% kredytu wynosi " << setprecision(15) << floorl((creditAmount * interest)*100)/100 << " zł" << endl;
+        cout << "Opłata bankowa 10% wynosi " << setprecision(15) << floorl((creditAmount * bankCharge)*100)/100 << " zł" << endl;
         cout << "********************************************************" << endl;
         
     }
@@ -253,10 +260,15 @@ double addMoney(double &clientAmount)
 
     cout<<"Podaj kwotę, którą chcesz wpłacić na konto"<<endl;
     cin >> y;
+    if(y<=0)
+    {
+        cout << "Bardzo śmieszne..." << endl;
+    }
     double z = floorl(y*100)/100;
     if (z>0)
     {
         clientAmount+=z;
+        cout << "Transakcja zrealizowana poprawnie, dziękujemy" << endl;
     }
     return clientAmount;
 }
@@ -280,6 +292,7 @@ double substractMoney(double &clientAmount)
             cout << "Nie możesz wypłacić 0 lub mniej" << endl;
         } else {
             clientAmount-=z;
+            cout << "Transakcja zrealizowana poprawnie, dziękujemy" << endl;
             return floorl(clientAmount*100)/100;
         }
     }
@@ -329,40 +342,58 @@ void transferToSavingsAccount(double &debitCount, double &savingsCount)
             savingsCount += floorl(z*100)/100;
         }
     }
-    
-
 }
 
+//PRZELEW Z OSZCZEDNOSCIOWEGO NA DEBETOWE KONTO
+void transferFromSavingsToDebitCount(double &savingsCount, double &debitCount)
+{
+    double z;
+
+    cout << "Podaj kwotę, którą chcesz przelać na konto ROR" << endl;
+    cin >> z;
+    if(savingsCount <= 0)
+    {
+        cout << "Nie masz oszczędności" << endl;
+    } else {
+        if(floorl(z*100)/100 < 0)
+        {
+            cout << "Nie możesz przelać ujemnej kwoty!";
+        } else {
+            savingsCount-= floorl(z*100)/100;
+            debitCount += floorl(z*100)/100;
+        }
+    }
+}
 
 //WYCIAG Z KONTA
 
 //STAN KONTA ROR
 void showDeposit(double clientAmount)
 {
-    cout << "Stan konta klienta wynosi: " << clientAmount << " zł" << endl;
+    cout << "Stan konta klienta wynosi: " << setprecision(15) << clientAmount << " zł" << endl;
 }
 
 //STAN KONTA OSZCZEDNOSCIOWEGO
 void showSavingsBalance(double clientSavingsAmount)
 {
-    cout << "Stan konta osczędnościowego wynosi: " << clientSavingsAmount << " zł" << endl;
+    cout << "Stan konta osczędnościowego wynosi: " << setprecision(15) << clientSavingsAmount << " zł" << endl;
 }
 
 //ILOSC KREDYTU DO SPLACENIA
 void showCreditAmount(double creditAmount)
 {
-    cout << "Zadłużenie wynosi: " << creditAmount << " zł" << endl;
+    cout << "Zadłużenie wynosi: " << setprecision(15) << creditAmount << " zł" << endl;
 }
 
 //ILOSC RAT KREDYTU DO SPLACENIA
 void showCreditInstallments(double creditInstallments)
 {
-    cout << "Liczba rat pozostałych do końca spłaty kredytu: " << creditInstallments << endl;
+    cout << "Liczba rat pozostałych do końca spłaty kredytu: " << setprecision(15) << creditInstallments << endl;
 }
 
 //WYSOKOSC RATY KREDYTU
 void showCreditAmountMonthly(double creditAmountMonthly)
 {
-    cout << "Wysokość miesięcznej raty kredytu wynosi: " << creditAmountMonthly << endl;
+    cout << "Wysokość miesięcznej raty kredytu wynosi: " << setprecision(15) << creditAmountMonthly << endl;
 }
 
