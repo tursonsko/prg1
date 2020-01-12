@@ -280,7 +280,7 @@ void takeCredit(double &client, double &clientCredit, double &clientCreditInstal
         return;
     } else {
         //KWOTA KREDYTU Z OPROCENTOWANIEM I OPLATA BANKOWA
-        totalCreditAmount = creditAmount + creditAmount * interest + creditAmount * bankCharge;
+        totalCreditAmount = floorl((creditAmount + creditAmount * interest + creditAmount * bankCharge)*100)/100;
 
         //PRZYPISANIE KREDYTU ORAZ RATY KREDYTU KLIENTOWI
         client += creditAmount;
